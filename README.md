@@ -1,2 +1,3 @@
 # Autonomy-Science-and-System
-Assignments for ASS
+Assignments for ASS.
+Git & ROS
