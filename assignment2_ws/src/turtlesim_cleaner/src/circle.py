@@ -16,6 +16,9 @@ def circle():
 
         rate.sleep()
 
+    # If we press ctrl + C, the node will stop.
+    rospy.spin()
+
 if __name__ == '__main__':
     try:
         # Testing our function
