@@ -1,0 +1,8 @@
+prefix=/home/a1an/AuE8230Spring23_JialunYang/assignment2_ws/devel
+
+Name: turtlesim_cleaner
+Description: Description of turtlesim_cleaner
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
