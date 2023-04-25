@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="aue_finals" type="wander_real.py" name="wander" output="screen"/>
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find turtlebot3_gazebo)/rviz/turtlebot3_gazebo_model.rviz"/>
+  </launch>
+  

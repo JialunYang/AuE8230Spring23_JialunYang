@@ -1,0 +1,10 @@
+<launch>
+    <arg name="node_start_delay" default="3"/>
+
+    <node pkg="aue_finals" type="keyboard_real.py" name="status" output="screen" />
+    <!-- <node pkg="aue_finals" type="wallfollower_real.py" name="wall_follower" output="screen" /> -->
+    <node pkg="aue_finals" type="follow_line_step_real.py" name="line_following_node" output="screen" />
+    <include file="$(find apriltag_ros)/launch/continuous_detection.launch"/>
+    <node pkg="aue_finals" type="follow_april_tag.py" name="follow_april_tag" output="screen" />
+
+</launch>

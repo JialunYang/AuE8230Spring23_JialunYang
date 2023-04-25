@@ -1,0 +1,57 @@
+<launch>
+    <arg name="node_start_delay" default="3"/>
+    <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
+    <arg name="multi_robot_name" default=""/>
+
+    <!-- original position -->
+    <arg name="x_pos" default="-0.2"/>
+    <arg name="y_pos" default="1.6"/>
+    <arg name="z_pos" default="0"/>
+    <arg name="yaw_pos" default="3.14"/>
+
+    <!-- line following position -->
+    <!-- <arg name="x_pos" default="-0.13"/>
+    <arg name="y_pos" default="-1.72"/>
+    <arg name="z_pos" default="0"/>
+    <arg name="yaw_pos" default="0"/> -->
+
+    <!-- after stop sign  -->
+    <!-- <arg name="x_pos" default="1.46"/>
+    <arg name="y_pos" default="-0.40"/>
+    <arg name="z_pos" default="0"/>
+    <arg name="yaw_pos" default="1.558"/> -->
+
+    <!-- April tag position -->
+    <arg name="x_pos2" default="1.46"/>
+    <arg name="y_pos2" default="0.35"/>
+    <arg name="z_pos2" default="0"/>
+    <arg name="yaw_pos2" default="1.496"/>
+
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find aue_finals)/worlds/turtlebot3_final.world" />
+        <arg name="paused" value="false"/>
+        <arg name="use_sim_time" value="true"/>
+        <arg name="gui" value="true"/>
+        <arg name="headless" value="false"/>
+        <arg name="debug" value="false"/>
+    </include>
+
+    <group ns="robot1">
+        <param name="robot_description" command="$(find xacro)/xacro --inorder $(find turtlebot3_description)/urdf/turtlebot3_$(arg model).urdf.xacro" />
+        <node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf" args="-urdf -model turtlebot3_$(arg model) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -Y $(arg yaw_pos) -param robot_description" />
+    </group>
+
+    <group ns="robot2">
+        <param name="robot_description" command="$(find xacro)/xacro --inorder $(find aue_finals)/urdf/turtlebot3_$(arg model).urdf.xacro" />
+        <node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf" args="-urdf -model april_tag_turtlebot3_$(arg model) -x $(arg x_pos2) -y $(arg y_pos2) -z $(arg z_pos2) -Y $(arg yaw_pos2) -param robot_description" />
+    </group>
+
+    <include file="$(find apriltag_ros)/launch/continuous_detection_gazebo.launch"/>
+
+    <node pkg="aue_finals" type="keyboard_gazebo.py" name="status" output="screen" />
+
+    <node pkg="aue_finals" type="wallfollower_gazebo.py" name="wall_follower" output="screen" />
+    <node pkg="aue_finals" type="follow_line_step_gazebo.py" name="line_following_node" output="screen" />
+    <node pkg="aue_finals" type="follow_april_tag_gazebo.py" name="follow_april_tag" output="screen" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@'" />
+    <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find turtlebot3_gazebo)/rviz/turtlebot3_gazebo_model.rviz"/> -->
+</launch>
